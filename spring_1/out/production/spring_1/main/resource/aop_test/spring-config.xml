@@ -5,7 +5,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <!--自动装载Knight类-->
-    <bean id="knight" class="main.java.aop.test.Knight"/>
+    <bean id="knight" class="main.java.aop.test.Knight">
+        <constructor-arg name="name" value="houyafei"/>
+    </bean>
 
     <bean id="minstrel" class="main.java.aop.test.Minstrel"/>
 
@@ -13,11 +15,14 @@
         <constructor-arg ref="knight"/>
     </bean>
 
-    <aop:config>
-        <aop:pointcut id = "say" expression="execution(* main.java.aop.test.Fight.onFighting(..))"/>
+    <!--包含参数的和不包含参数的切面方法不可以同时使用-->
+    <aop:config proxy-target-class="true">
+        <aop:pointcut id = "say" expression="execution(* main.java.aop.test.Fight.onFighting(String)) and args(army)"/>
         <aop:aspect ref="minstrel">
-            <aop:before pointcut-ref="say" method="beforeRun"/>
-            <aop:after  pointcut-ref="say" method="afterRun"/>
+            <!--<aop:before pointcut-ref="say" method="beforeRun"/>-->
+            <aop:before pointcut-ref="say" method="beforeRunArgs" arg-names="army"/>
+            <!--<aop:after  pointcut-ref="say" method="afterRun"/>-->
+            <!--<aop:around pointcut-ref="say" method="aroundRun"/>-->
         </aop:aspect>
     </aop:config>
 

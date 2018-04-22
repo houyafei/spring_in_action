@@ -20,6 +20,6 @@ public class Knight {
     }
 
     public void sayHello(){
-        System.out.println("hello , I am a brave knight. My name is ");
+        System.out.println("hello , I am a brave knight. My name is " +name);
     }
 }
